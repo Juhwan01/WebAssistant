@@ -21,11 +21,11 @@ from langchain_openai import ChatOpenAI, OpenAIEmbeddings
 
 # 뉴스기사의 내용을 로드하고, 청크로 나누고, 인덱싱합니다.
 loader = WebBaseLoader(
-    web_paths=("https://www.bbc.com/news/business-68092814",),
+    web_paths=("https://www.sedaily.com/NewsView/2DAH33UJH8",),
     bs_kwargs=dict(
         parse_only=bs4.SoupStrainer(
-            "main",
-            attrs={"id": ["main-content"]},
+            "div",
+            attrs={"class": ["article_head","article_con"]},
         )
     ),
 )
@@ -59,7 +59,7 @@ prompt = PromptTemplate.from_template(
 #Answer:"""
 )
 
-llm = ChatOpenAI(model_name="gpt-4o", temperature=0)
+llm = ChatOpenAI(model_name="gpt-4-turbo", temperature=0)
 
 
 # 체인을 생성합니다.
@@ -72,5 +72,5 @@ rag_chain = (
 
 from langchain_teddynote.messages import stream_response
 
-answer = rag_chain.stream("내용 요약해줘?")
+answer = rag_chain.stream("당신은 누구입니까?")
 stream_response(answer)
